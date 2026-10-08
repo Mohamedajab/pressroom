@@ -9,6 +9,8 @@
 
 Pressroom is an original team CMS inspired by the editorial problems that systems like Wagtail solve. It combines a responsive editorial dashboard, a public publication and a headless REST API. It does not depend on Wagtail or copy its source code.
 
+**Verified:** 70 tests passing against PostgreSQL on Python 3.12/3.13, 97.63% backend coverage, and a successful Docker build. [Verification record](docs/verification.md).
+
 ![The editorial dashboard](docs/screenshots/dashboard.png)
 
 ## What it does
