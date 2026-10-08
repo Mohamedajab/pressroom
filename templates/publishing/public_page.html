@@ -1,0 +1,12 @@
+{% extends "public_base.html" %}
+{% block title %}{{ revision.title }} · {{ workspace.name }}{% endblock %}
+{% block public_content %}
+  <article class="published-article">
+    <a class="back-link" href="{% url 'public-index' workspace.slug %}">← All stories</a>
+    <div class="eyebrow">FIELD NOTES · {{ page.published_at|date:'d M Y' }}</div>
+    <h1>{{ revision.title }}</h1>
+    <p class="standfirst">{{ revision.excerpt }}</p>
+    <div class="article-rule"></div>
+    <div class="prose">{{ rendered_body|safe }}</div>
+  </article>
+{% endblock %}

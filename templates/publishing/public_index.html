@@ -1,0 +1,45 @@
+{% extends "public_base.html" %}
+{% block public_content %}
+  <section class="publication-hero">
+    <div class="eyebrow">NOTES, IDEAS &amp; NEW PERSPECTIVES</div>
+    <h1>
+      A space for
+      <br>
+      <em>something good.</em>
+    </h1>
+    <p>{{ workspace.description|default:'Stories worth taking a moment for.' }}</p>
+  </section>
+  <div class="publication-section">
+    <h2>The latest chapters</h2>
+    <form method="get" class="public-search">
+      <label class="sr-only" for="public-search">Search published pages</label>
+      <input name="q"
+             id="public-search"
+             value="{{ term }}"
+             placeholder="Search stories…">
+      <button class="button secondary compact">Search</button>
+    </form>
+  </div>
+  <div class="article-grid">
+    {% for page in pages %}
+      <a class="article-card"
+         href="{% url 'public-page' workspace.slug page.slug %}">
+        <div class="article-number">
+          {{ forloop.counter|stringformat:'02d' }} <span>↗</span>
+        </div>
+        <small>{{ page.published_at|date:'d M Y' }} · FIELD NOTES</small>
+        <h2>{{ page.published_revision.title }}</h2>
+        <p>{{ page.published_revision.excerpt }}</p>
+        <span class="read-story">Read the story →</span>
+      </a>
+    {% empty %}
+      <div class="empty-state">
+        <h2>Something good is on its way.</h2>
+        <p>
+          {% if term %}No published stories match your search.{% else %}Check back for our first story.{% endif %}
+        </p>
+      </div>
+    {% endfor %}
+  </div>
+  {% include "publishing/pagination.html" with items=pages %}
+{% endblock %}

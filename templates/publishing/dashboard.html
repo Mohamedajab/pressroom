@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="page-heading">
+    <div>
+      <div class="eyebrow">YOUR EDITORIAL DESK</div>
+      <h1>
+        Good ideas live here<span class="accent">.</span>
+      </h1>
+      <p class="muted">A home for everything you’re working on, and everything you’ve put into the world.</p>
+    </div>
+    {% if role != "viewer" %}
+      <a class="button primary" href="{% url 'page-new' workspace.slug %}">
+        <span>＋</span> New page</a>
+    {% endif %}
+  </div>
+  <section class="stats" aria-label="Content statistics">
+    <div class="stat">
+      <span>Total pages</span>
+      <strong>{{ total|stringformat:'02d' }}</strong>
+      <small>Your growing collection</small>
+      <b aria-hidden="true">▤</b>
+    </div>
+    <div class="stat">
+      <span>Published</span>
+      <strong>{{ live|stringformat:'02d' }}</strong>
+      <small>
+        <i class="live-dot">
+        </i> Out in the world</small>
+        <b aria-hidden="true">↗</b>
+      </div>
+      <div class="stat">
+        <span>In review</span>
+        <strong>{{ review_count|stringformat:'02d' }}</strong>
+        <small>Ready for a second pair of eyes</small>
+        <b aria-hidden="true">◉</b>
+      </div>
+      <div class="stat">
+        <span>Scheduled</span>
+        <strong>{{ scheduled_count|stringformat:'02d' }}</strong>
+        <small>A little ahead of the curve</small>
+        <b aria-hidden="true">◷</b>
+      </div>
+    </section>
+    <div class="library-heading">
+      <h2>
+        Content library <span class="count-pill">{{ total }}</span>
+      </h2>
+      <span class="muted tiny">A little progress, every day.</span>
+    </div>
+    <form class="filters" method="get">
+      <div class="search-box">
+        <span aria-hidden="true">⌕</span>
+        <label class="sr-only" for="search">Search pages</label>
+        <input id="search" name="q" value="{{ term }}" placeholder="Find a page…">
+      </div>
+      <label class="sr-only" for="status">Filter by status</label>
+      <select name="status" id="status">
+        <option value="">All statuses</option>
+        {% for value, label in statuses %}
+          <option value="{{ value }}"
+                  {% if selected_status == value %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+      <button class="button secondary compact">Filter</button>
+      {% if term or selected_status %}
+        <a class="subtle-link" href="{% url 'dashboard' workspace.slug %}">Clear</a>
+      {% endif %}
+    </form>
+    <div class="table-shell">
+      <table class="content-table">
+        <thead>
+          <tr>
+            <th>PAGE TITLE</th>
+            <th>STATUS</th>
+            <th>AUTHOR</th>
+            <th>LAST UPDATED</th>
+            <th>
+              <span class="sr-only">Open</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for page in pages %}
+            <tr>
+              <td>
+                <a class="title-link"
+                   href="{% url 'page-detail' workspace.slug page.pk %}">
+                  <span class="page-icon" aria-hidden="true">▤</span>
+                  <div>
+                    <strong>{{ page.title }}</strong>
+                    <small>/{{ page.slug }}</small>
+                  </div>
+                </a>
+              </td>
+              <td>
+                <span class="badge {{ page.status }}">{{ page.get_status_display }}</span>
+                {% if page.published_revision_id and page.status != "published" %}
+                  <small class="live-hint">Previous version live</small>
+                {% endif %}
+              </td>
+              <td>
+                <span class="author-cell">
+                  <span class="avatar small">{{ page.author.username|first|upper }}</span>{{ page.author.username }}</span>
+              </td>
+              <td class="date-cell">
+                {{ page.updated_at|date:'d M Y' }}<small>{{ page.updated_at|date:'H:i' }}</small>
+              </td>
+              <td>
+                <a class="row-arrow"
+                   aria-label="Open {{ page.title }}"
+                   href="{% url 'page-detail' workspace.slug page.pk %}">↗</a>
+              </td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="5">
+                <div class="empty-state">
+                  <h3>A blank page is a beginning.</h3>
+                  <p>
+                    {% if term or selected_status %}No pages match your filters. Try another search.{% else %}Create your first page and make this space yours.{% endif %}
+                  </p>
+                </div>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <div class="table-footer">
+        <span>{{ pages.paginator.count }} page{{ pages.paginator.count|pluralize }} · Sorted by latest update</span>
+        {% include "publishing/pagination.html" with items=pages %}
+      </div>
+    </div>
+    <section class="editorial-note">
+      <div class="note-mark" aria-hidden="true">✳</div>
+      <div>
+        <strong>Great work is a team sport.</strong>
+        <p>Move a draft into review when it’s ready. Your editors take it from there.</p>
+      </div>
+      <a href="{% url 'team' workspace.slug %}">Meet your team →</a>
+    </section>
+{% endblock %}

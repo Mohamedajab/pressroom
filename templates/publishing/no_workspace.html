@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block layout %}
+  <main id="main" class="empty-state">
+    <h1>Your workspace is waiting.</h1>
+    <p>Ask an owner to add your account to their team.</p>
+    <form method="post" action="{% url 'logout' %}">
+      {% csrf_token %}
+      <button class="button secondary">Sign out</button>
+    </form>
+  </main>
+{% endblock %}

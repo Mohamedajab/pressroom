@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block breadcrumb %}Activity{% endblock %}
+{% block content %}
+  <div class="page-heading">
+    <div>
+      <div class="eyebrow">A RECORD OF THE WORK</div>
+      <h1>
+        Nothing lost along the way<span class="accent">.</span>
+      </h1>
+      <p class="muted">Who changed what, and when. Your team’s publishing history.</p>
+    </div>
+  </div>
+  <section class="panel">
+    <div class="timeline">
+      {% for event in events %}
+        <div class="timeline-item">
+          <span class="timeline-dot"></span>
+          <div>
+            <strong>{{ event.actor.username|default:'Scheduler' }}</strong> <span class="event-action">{{ event.action }}</span>
+            {% if event.page %}
+              <a href="{% url 'page-detail' workspace.slug event.page.pk %}">{{ event.page.title }}</a>
+            {% endif %}
+            <small>{{ event.created_at|date:'d M Y · H:i' }}{% if event.detail.version %} · Version {{ event.detail.version }}{% endif %}{% if event.detail.username %} · {{ event.detail.username }} ({{ event.detail.role }}){% endif %}
+            </small>
+          </div>
+        </div>
+      {% empty %}
+        <div class="empty-state">Your story starts with the first change.</div>
+      {% endfor %}
+    </div>
+    {% include "publishing/pagination.html" with items=events %}
+  </section>
+{% endblock %}

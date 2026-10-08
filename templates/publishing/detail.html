@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% block title %}{{ page.title }} · Pressroom{% endblock %}
+{% block breadcrumb %}Page overview{% endblock %}
+{% block content %}
+  <a class="back-link" href="{% url 'dashboard' workspace.slug %}">← Content library</a>
+  <div class="page-heading">
+    <div>
+      <div class="eyebrow">PAGE OVERVIEW · VERSION {{ page.version }}</div>
+      <h1 class="detail-title">{{ page.title }}</h1>
+      <p class="muted">/{{ page.slug }} · By {{ page.author.username }} · Updated {{ page.updated_at|date:'d M Y, H:i' }}</p>
+    </div>
+    {% if can_edit %}
+      <a class="button primary"
+         href="{% url 'page-edit' workspace.slug page.pk %}">Edit draft ↗</a>
+    {% endif %}
+  </div>
+  <div class="detail-grid">
+    <div>
+      <section class="panel preview-panel">
+        <div class="section-heading">
+          <h2>Current draft preview</h2>
+          <span class="badge {{ page.status }}">{{ page.get_status_display }}</span>
+        </div>
+        {% if page.excerpt %}
+          <p class="standfirst">{{ page.excerpt }}</p>
+        {% endif %}
+        <article class="prose">{{ rendered_body|safe }}</article>
+      </section>
+      <section class="panel revision-panel">
+        <h2>Every chapter, kept.</h2>
+        <p class="muted tiny">Restore a previous version as a new draft. Your history stays intact.</p>
+        {% for revision in revisions %}
+          <div class="revision-row">
+            <span class="version-mark">v{{ revision.number }}</span>
+            <div>
+              <strong>{{ revision.title }}</strong>
+              <small>{{ revision.actor.username }} · {{ revision.created_at|date:'d M, H:i' }}</small>
+            </div>
+            {% if can_edit and revision.number != page.version %}
+              <form method="post" action="{% url 'page-action' workspace.slug page.pk %}">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="restore">
+                <input type="hidden" name="expected_version" value="{{ page.version }}">
+                <input type="hidden" name="number" value="{{ revision.number }}">
+                <button class="text-button">Restore ↶</button>
+              </form>
+            {% else %}
+              <span class="muted tiny">{% if revision.number == page.version %}Current{% endif %}</span>
+            {% endif %}
+          </div>
+        {% endfor %}
+        {% include "publishing/pagination.html" with items=revisions %}
+      </section>
+    </div>
+    <aside>
+      <section class="panel workflow-panel">
+        <h3>Where things stand</h3>
+        <span class="badge {{ page.status }}">{{ page.get_status_display }}</span>
+        {% if page.published_revision_id %}
+          <p class="muted tiny">An approved version is live.</p>
+          <a class="subtle-link"
+             href="{% url 'public-page' workspace.slug page.slug %}"
+             target="_blank"
+             rel="noopener">View published page ↗</a>
+        {% else %}
+          <p class="muted tiny">This page is not publicly visible.</p>
+        {% endif %}
+        {% if page.scheduled_for %}
+          <p class="notice">Scheduled for {{ page.scheduled_for|date:'d M Y, H:i T' }}.</p>
+        {% endif %}
+        <hr>
+        {% if can_edit and page.status == "draft" %}
+          <form method="post" action="{% url 'page-action' workspace.slug page.pk %}">
+            {% csrf_token %}
+            <input type="hidden" name="expected_version" value="{{ page.version }}">
+            <button class="button primary full"
+                    name="action"
+                    value="submit">Send for review →</button>
+          </form>
+        {% endif %}
+        {% if is_editor and page.status == "review" %}
+          <form method="post" action="{% url 'page-action' workspace.slug page.pk %}">
+            {% csrf_token %}
+            <input type="hidden" name="expected_version" value="{{ page.version }}">
+            <button class="button primary full"
+                    name="action"
+                    value="publish">Approve &amp; publish ↗</button>
+            <button class="button secondary full"
+                    name="action"
+                    value="reject">Return to draft</button>
+          </form>
+          <form class="schedule-form"
+                method="post"
+                action="{% url 'page-action' workspace.slug page.pk %}">
+            {% csrf_token %}
+            <input type="hidden" name="expected_version" value="{{ page.version }}">
+            <label for="scheduled_for">Or publish later</label>
+            <input type="datetime-local"
+                   name="scheduled_for"
+                   id="scheduled_for"
+                   required>
+            <small class="help">Europe/London time</small>
+            <button class="button secondary full"
+                    name="action"
+                    value="schedule">Approve &amp; schedule</button>
+          </form>
+        {% endif %}
+        {% if is_editor and page.status != "archived" %}
+          <form method="post" action="{% url 'page-action' workspace.slug page.pk %}">
+            {% csrf_token %}
+            <input type="hidden" name="expected_version" value="{{ page.version }}">
+            <button class="text-button danger"
+                    name="action"
+                    value="archive">Archive and unpublish</button>
+          </form>
+        {% endif %}
+        {% if role == "viewer" %}
+          <p class="muted tiny">You have read-only access.</p>
+        {% endif %}
+      </section>
+    </aside>
+  </div>
+{% endblock %}

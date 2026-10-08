@@ -1,0 +1,41 @@
+[project]
+name = "pressroom-cms"
+version = "0.1.0"
+description = "A team publishing platform with review workflows and a snapshot-based content API."
+requires-python = ">=3.12"
+dependencies = [
+  "Django>=5.2.8,<5.3",
+  "djangorestframework>=3.16,<3.17",
+  "drf-spectacular>=0.28,<0.30",
+  "dj-database-url>=2.3,<4",
+  "psycopg[binary]>=3.2,<4",
+  "whitenoise>=6.9,<7",
+  "gunicorn>=23,<24; sys_platform != 'win32'",
+  "Markdown>=3.8,<4",
+  "bleach>=6.2,<7",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.3,<10", "pytest-django>=4.11,<5", "pytest-cov>=6,<8", "ruff>=0.11,<1"]
+browser = ["playwright>=1.50,<2"]
+
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["config*", "publishing*"]
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings"
+python_files = ["test_*.py"]
+testpaths = ["tests"]
+addopts = "--strict-markers"
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["E501"]

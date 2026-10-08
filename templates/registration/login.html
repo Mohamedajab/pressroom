@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Welcome back · Pressroom{% endblock %}
+{% block layout %}
+  <main id="main" class="login-layout">
+    <section class="login-story">
+      <a class="brand" href="{% url 'home' %}">
+        <span class="brand-mark">p<span>•</span>
+        </span>pressroom.</a>
+        <div>
+          <div class="eyebrow light">GOOD STORIES DESERVE A HOME</div>
+          <h1>
+            From first thought
+            <br>
+            to <em>published.</em>
+          </h1>
+          <p>
+            A considered space for teams to write, review
+            <br>
+            and put their best work into the world.
+          </p>
+          <div class="story-art" aria-hidden="true">
+            <div class="art-sheet">
+              <span>THE NEXT CHAPTER</span>
+              <b>Ideas become
+                <br>
+              something.</b>
+              <i>
+              </i>
+              <i>
+              </i>
+              <i>
+              </i>
+              <div>● READY WHEN YOU ARE</div>
+            </div>
+            <div class="art-tag">Write. Refine. Publish. ↗</div>
+          </div>
+        </div>
+        <small>Built for the way good teams work.</small>
+      </section>
+      <section class="login-panel">
+        <div class="login-form">
+          <div class="eyebrow">YOUR EDITORIAL SPACE</div>
+          <h2>Welcome back.</h2>
+          <p class="muted">Your next chapter starts here.</p>
+          <form method="post">
+            {% csrf_token %}{{ form.non_field_errors }}{% for field in form %}
+            <div class="form-field">{{ field.label_tag }}{{ field }}{{ field.errors }}</div>
+{% endfor %}
+{% if next %}
+  <input type="hidden" name="next" value="{{ next }}">
+{% endif %}
+<button class="button primary full">
+  Sign in to Pressroom <span>→</span>
+</button>
+</form>
+<p class="login-footnote">Need access? Ask your workspace owner for an account.</p>
+</div>
+</section>
+</main>
+{% endblock %}

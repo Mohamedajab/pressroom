@@ -1,0 +1,92 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Pressroom · Your words, ready for the world{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'app.css' %}">
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    {% block layout %}
+      <div class="app-shell">
+        <aside class="sidebar">
+          <a class="brand" href="{% url 'home' %}">
+            <span class="brand-mark">p<span>•</span>
+            </span>pressroom<span class="brand-dot">.</span>
+          </a>
+          <form class="mobile-signout" method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button class="logout" title="Sign out" aria-label="Sign out">↪</button>
+          </form>
+          <div class="workspace-label">YOUR WORKSPACE</div>
+          <div class="workspace-card">
+            <span class="workspace-icon">{{ workspace.name|first }}</span>
+            <div>
+              <strong>{{ workspace.name }}</strong>
+              <small>{{ role|title }} access</small>
+            </div>
+          </div>
+          {% if workspaces|length > 1 %}
+            <div class="workspace-switch">
+              {% for other in workspaces %}
+                {% if other.pk != workspace.pk %}
+                  <a href="{% url 'dashboard' other.slug %}">Switch to {{ other.name }}</a>
+                {% endif %}
+              {% endfor %}
+            </div>
+          {% endif %}
+          <nav aria-label="Workspace navigation">
+            <a class="nav-link {% if section == 'content' %}active{% endif %}"
+               href="{% url 'dashboard' workspace.slug %}">
+              <span aria-hidden="true">▤</span> Content library</a>
+            <a class="nav-link {% if section == 'activity' %}active{% endif %}"
+               href="{% url 'activity' workspace.slug %}">
+              <span aria-hidden="true">◷</span> Activity log</a>
+            <a class="nav-link {% if section == 'team' %}active{% endif %}"
+               href="{% url 'team' workspace.slug %}">
+              <span aria-hidden="true">♧</span> Your team</a>
+          </nav>
+          <div class="sidebar-bottom">
+            <div class="site-card">
+              <span class="live-dot"></span> MAKE SOMETHING MATTER
+              <p>A little space for your next big idea.</p>
+              <a href="{% url 'public-index' workspace.slug %}"
+                 target="_blank"
+                 rel="noopener">Visit your publication ↗</a>
+            </div>
+            <div class="profile">
+              <span class="avatar">{{ user.username|first|upper }}</span>
+              <div>
+                <strong>{{ user.username }}</strong>
+                <small>{{ role|title }}</small>
+              </div>
+              <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button class="logout" title="Sign out" aria-label="Sign out">↪</button>
+              </form>
+            </div>
+          </div>
+        </aside>
+        <div class="main-wrap">
+          <header class="topbar">
+            <span>Workspace <span class="slash">/</span> {{ workspace.name }} <span class="slash">/</span> <strong>{% block breadcrumb %}Content{% endblock %}</strong>
+            </span>
+            <a href="{% url 'api-docs' %}" class="subtle-link">API documentation ↗</a>
+          </header>
+          <main id="main" class="main-content">
+            {% for message in messages %}
+              <div role="status" class="notice {{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+            {% block content %}{% endblock %}
+          </main>
+          <footer class="app-footer">
+            <span>Made for thoughtful publishing.</span>
+            <span>Pressroom <span class="footer-dot">●</span> A place to publish</span>
+          </footer>
+        </div>
+      </div>
+    {% endblock %}
+  </body>
+</html>

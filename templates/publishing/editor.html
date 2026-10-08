@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}{% if page %}Edit {{ page.title }}{% else %}New page{% endif %} · Pressroom{% endblock %}
+{% block breadcrumb %}{% if page %}Edit page{% else %}New page{% endif %}{% endblock %}
+{% block content %}
+  <a class="back-link" href="{% url 'dashboard' workspace.slug %}">← Content library</a>
+  <div class="page-heading">
+    <div>
+      <div class="eyebrow">MAKE ROOM FOR AN IDEA</div>
+      <h1>
+      {% if page %}A little refinement<span class="accent">.</span>
+{% else %}Start something good<span class="accent">.</span>
+{% endif %}
+</h1>
+<p class="muted">Write freely. Save a draft. Publish when you’re ready.</p>
+</div>
+{% if page %}
+  <span class="badge {{ page.status }}">{{ page.get_status_display }}</span>
+{% endif %}
+</div>
+<form method="post" class="editor-grid">
+  {% csrf_token %}
+  <section class="panel editor-fields">{{ form.non_field_errors }}{% for field in form %}{% if field.is_hidden %}{{ field }}{{ field.errors }}{% elif field.name != "slug" %}
+    <div class="form-field">{{ field.label_tag }}{{ field }}{% if field.help_text %}
+      <small class="help">{{ field.help_text }}</small>
+    {% endif %}{{ field.errors }}</div>
+  {% endif %}
+{% endfor %}
+</section>
+<aside>
+  <section class="panel">
+    <h3>The page details</h3>
+    <div class="form-field">{{ form.slug.label_tag }}{{ form.slug }}<small class="help">{{ form.slug.help_text }}</small>{{ form.slug.errors }}</div>
+    <hr>
+    <p class="muted tiny">Saving creates a new revision. Existing live content stays published until an editor approves your changes.</p>
+    <button class="button primary full">Save draft →</button>
+  </section>
+  <section class="writing-tip">
+    <div class="eyebrow">A SMALL WRITING TIP</div>
+    <h3>
+      Give your words
+      <br>
+      some breathing room.
+    </h3>
+    <p>Short paragraphs. Clear headings. One good idea at a time.</p>
+  </section>
+</aside>
+</form>
+{% endblock %}

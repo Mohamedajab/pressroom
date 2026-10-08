@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}{{ workspace.name }} · Pressroom{% endblock %}
+{% block layout %}
+  <div class="publication">
+    <header class="publication-header">
+      <a class="publication-brand"
+         href="{% url 'public-index' workspace.slug %}">{{ workspace.name }}<span class="accent">.</span>
+      </a>
+      <span class="publication-label">AN INDEPENDENT PUBLICATION</span>
+    </header>
+    <main id="main">
+      {% block public_content %}{% endblock %}
+    </main>
+    <footer class="publication-footer">
+      <span>Thoughtfully published with <strong>Pressroom.</strong>
+      </span>
+      <a href="{% url 'home' %}">Editorial desk ↗</a>
+    </footer>
+  </div>
+{% endblock %}

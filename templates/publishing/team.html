@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block breadcrumb %}Team{% endblock %}
+{% block content %}
+  <div class="page-heading">
+    <div>
+      <div class="eyebrow">THE PEOPLE BEHIND THE PAGES</div>
+      <h1>
+        Better, together<span class="accent">.</span>
+      </h1>
+      <p class="muted">A little clarity on who writes, who reviews, and who keeps things moving.</p>
+    </div>
+  </div>
+  <div class="editor-grid">
+    <section class="panel">
+      <h2>Your team</h2>
+      {% for member in members %}
+        <div class="member-row">
+          <span class="avatar">{{ member.user.username|first|upper }}</span>
+          <div>
+            <strong>{{ member.user.username }}</strong>
+            <small>{{ member.user.email }}</small>
+          </div>
+          <span class="badge draft">{{ member.get_role_display }}</span>
+        </div>
+      {% endfor %}
+    </section>
+    <aside>
+      <section class="panel">
+        <h3>Team roles</h3>
+        <dl class="role-list">
+          <dt>Owner</dt>
+          <dd>
+            Manage the team and publish any page.
+          </dd>
+          <dt>Editor</dt>
+          <dd>
+            Edit, review and publish any page.
+          </dd>
+          <dt>Author</dt>
+          <dd>
+            Write and submit their own pages.
+          </dd>
+          <dt>Viewer</dt>
+          <dd>
+            Read drafts, revisions and activity.
+          </dd>
+        </dl>
+      </section>
+      {% if role == "owner" %}
+        <form method="post" class="panel">
+          {% csrf_token %}
+          <h3>Add or update a member</h3>{{ form.non_field_errors }}{% for field in form %}
+          <div class="form-field">
+            {{ field.label_tag }}{{ field }}{{ field.errors }}<small class="help">{{ field.help_text }}</small>
+          </div>
+      {% endfor %}
+      <button class="button primary full">Save team member →</button>
+    </form>
+{% endif %}
+</aside>
+</div>
+{% endblock %}
