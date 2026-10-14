@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}Pressroom · Your words, ready for the world{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'app.css' %}">
+    <link rel="stylesheet" href="{% static 'demo.css' %}">
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
@@ -76,6 +77,16 @@
             <a href="{% url 'api-docs' %}" class="subtle-link">API documentation ↗</a>
           </header>
           <main id="main" class="main-content">
+            {% if demo_session %}
+              <aside class="notice demo-controls" aria-label="Demo controls">
+                <div><strong>Your private demo · {{ role|title }} access</strong>
+                <p>This workspace expires in one hour. Use sample content only. Switch roles to review and publish your draft.</p></div>
+                <form method="post" action="{% url 'demo-switch' %}">{% csrf_token %}
+                  <input type="hidden" name="role" value="{% if role == 'author' %}editor{% else %}author{% endif %}">
+                  <button class="button">Switch to {% if role == 'author' %}editor{% else %}author{% endif %}</button>
+                </form>
+              </aside>
+            {% endif %}
             {% for message in messages %}
               <div role="status" class="notice {{ message.tags }}">{{ message }}</div>
             {% endfor %}

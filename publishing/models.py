@@ -29,6 +29,20 @@ class Membership(models.Model):
         constraints = [models.UniqueConstraint(fields=["workspace", "user"], name="unique_member")]
 
 
+class DemoSession(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    workspace = models.OneToOneField(Workspace, on_delete=models.CASCADE, related_name="demo")
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="author_demos"
+    )
+    editor = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="editor_demos"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    expires_at = models.DateTimeField(db_index=True)
+    writes = models.PositiveIntegerField(default=0)
+
+
 class Page(models.Model):
     class Status(models.TextChoices):
         DRAFT = "draft", "Draft"

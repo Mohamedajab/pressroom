@@ -9,6 +9,16 @@
 
 Pressroom is an original team CMS inspired by the editorial problems that systems like Wagtail solve. It combines a responsive editorial dashboard, a public publication and a headless REST API. It does not depend on Wagtail or copy its source code.
 
+## Try the visitor demo
+
+The opt-in `/demo/` experience creates a separate one-hour workspace for each visitor, with author/editor switching and a real draft → review → publication workflow. It uses the same Django services and database as the application. No shared account password is published.
+
+For local preview, set `DEMO_ENABLED=true`, apply migrations and open `/demo/`. See [hosted demo setup](docs/hosted-demo.md) for the Render blueprint, free-tier limits and a two-minute walkthrough. The deployment files are prepared; a public deployment is not yet verified.
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https%3A%2F%2Fgithub.com%2FMohamedajab%2Fpressroom)
+
+![Start a visitor demo](docs/screenshots/demo-start.png)
+
 **Verified:** 70 tests passing against PostgreSQL on Python 3.12/3.13, 97.63% backend coverage, and a successful Docker build. [Verification record](docs/verification.md).
 
 ![The editorial dashboard](docs/screenshots/dashboard.png)

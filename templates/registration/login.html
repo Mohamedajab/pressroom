@@ -54,6 +54,7 @@
 </button>
 </form>
 <p class="login-footnote">Need access? Ask your workspace owner for an account.</p>
+{% if demo_enabled %}<p><a class="button" href="{% url 'demo' %}">Try the interactive demo →</a></p>{% endif %}
 </div>
 </section>
 </main>

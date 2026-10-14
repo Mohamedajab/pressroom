@@ -2,6 +2,8 @@
 
 The Compose file is a local PostgreSQL demo. A remote deployment needs a TLS reverse proxy, managed secret values, persistent PostgreSQL storage and a scheduled worker. No hosted production deployment is created by this repository.
 
+For the prepared Render deployment and isolated visitor workflow, see [hosted demo setup](hosted-demo.md). `DEMO_ENABLED` defaults to false. Hosted work uses `SECRET_KEY_SEED` from the platform's random generator, or the existing `SECRET_KEY` setting on other hosts.
+
 ## Environment
 
 | Variable | Purpose |

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Try Pressroom · Interactive demo{% endblock %}
+{% block layout %}
+<main id="main" class="demo-landing">
+  <a class="brand" href="{% url 'demo' %}">pressroom.</a>
+  <p class="eyebrow">FROM FIRST THOUGHT TO PUBLISHED</p>
+  <h1>A good story starts here.</h1>
+  <p>Try the complete publishing workflow in your own temporary workspace. No signup or shared password required.</p>
+  <ol>
+    <li><strong>Write as an author.</strong> Edit a story. Its approved version stays live while your changes remain in draft.</li>
+    <li><strong>Submit it for review.</strong> Switch to editor using the demo controls.</li>
+    <li><strong>Approve and publish.</strong> Open your publication to see the approved content, then explore revision history and the audit trail.</li>
+  </ol>
+  <form method="post" action="{% url 'demo-start' %}">{% csrf_token %}<button class="button primary">Start my demo →</button></form>
+  <p class="muted">Use sample content only. Your workspace expires after one hour and is then deleted. Published demo pages are accessible to anyone with their URL. Team administration is disabled.</p>
+  <p><a href="https://github.com/Mohamedajab/pressroom">Explore the source and tests ↗</a> · <a href="{% url 'login' %}">Account sign in</a></p>
+</main>
+{% endblock %}
