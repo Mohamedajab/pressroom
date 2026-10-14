@@ -1,8 +1,10 @@
 # Hosted portfolio demo
 
+**Live:** [pressroom-demo.onrender.com/demo/](https://pressroom-demo.onrender.com/demo/). On 14 October 2026, the hosted health endpoint and a real Chromium publishing flow passed verification, including private drafts, visitor isolation and mobile layout. See [the verification record](verification.md).
+
 ## Deploy from your own Render account
 
-The repository includes `render.yaml` for one Python web service and one PostgreSQL database. No public instance has been verified yet. You need to create a Render account and review the deployment in that account.
+The repository includes `render.yaml` for one Python web service and one PostgreSQL database. To deploy your own instance, create a Render account and review the deployment in that account.
 
 1. After merging the hosted-demo changes, use [Deploy to Render](https://render.com/deploy?repo=https%3A%2F%2Fgithub.com%2FMohamedajab%2Fpressroom). To evaluate the review branch first, use [the branch deployment link](https://render.com/deploy?repo=https%3A%2F%2Fgithub.com%2FMohamedajab%2Fpressroom%2Ftree%2Fcodex%2Fhosted-portfolio-demo).
 2. Confirm both resources use the free plan. Render generates a 256-bit secret seed and the private database connection. Django derives its signing key from the seed; keep it stable across deployments.

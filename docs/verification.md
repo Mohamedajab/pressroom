@@ -1,5 +1,18 @@
 # Verification record
 
+## Visitor demo and hosted verification — 14 October 2026
+
+- 76 tests passed against local PostgreSQL 17, including concurrent editor and scheduler tests; 96.25% coverage of `publishing` on Windows/Python 3.14.5.
+- Ruff, Django system/migration checks, OpenAPI validation and the hosted production configuration check passed.
+- [GitHub CI](https://github.com/Mohamedajab/pressroom/actions/runs/38497767218) passed on Python 3.12 and 3.13, with PostgreSQL and the Chromium visitor flow; the container build also passed.
+- The deployed [visitor demo](https://pressroom-demo.onrender.com/demo/) was checked directly: `/health/` returned HTTP 200 with `status: ok`.
+- Chromium created two independent temporary visitor workspaces. The author created a private draft, submitted it for review, switched to editor and published it. A later unapproved edit stayed out of the public page.
+- The second visitor could not access the first visitor's workspace (HTTP 403). The 390 px layout had no horizontal document overflow, and the browser reported no JavaScript page errors.
+
+These are deployment smoke checks, not a traffic benchmark or independent security audit. Free hosting and database-expiry limitations remain documented in [hosted demo setup](hosted-demo.md).
+
+## Original application verification
+
 Local verification on 8 October 2026, Windows / Python 3.12.10 / SQLite:
 
 - 68 backend tests passed; 2 PostgreSQL-only concurrency tests skipped locally.
