@@ -6,7 +6,7 @@
 
 The repository includes `render.yaml` for one Python web service and one PostgreSQL database. To deploy your own instance, create a Render account and review the deployment in that account.
 
-1. After merging the hosted-demo changes, use [Deploy to Render](https://render.com/deploy?repo=https%3A%2F%2Fgithub.com%2FMohamedajab%2Fpressroom). To evaluate the review branch first, use [the branch deployment link](https://render.com/deploy?repo=https%3A%2F%2Fgithub.com%2FMohamedajab%2Fpressroom%2Ftree%2Fcodex%2Fhosted-portfolio-demo).
+1. Use [Deploy to Render](https://render.com/deploy?repo=https%3A%2F%2Fgithub.com%2FMohamedajab%2Fpressroom) and select the `main` branch.
 2. Confirm both resources use the free plan. Render generates a 256-bit secret seed and the private database connection. Django derives its signing key from the seed; keep it stable across deployments.
 3. Wait for a successful build and startup. Open the assigned HTTPS hostname with `/demo/` appended.
 4. Complete draft → review → publish, inspect `/health/`, and check the maintenance logs before adding the URL to a CV.
