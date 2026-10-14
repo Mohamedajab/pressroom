@@ -1,8 +1,11 @@
 from django.urls import path
 
-from . import views
+from . import demo, views
 
 urlpatterns = [
+    path("demo/", demo.landing, name="demo"),
+    path("demo/start/", demo.start, name="demo-start"),
+    path("demo/switch/", demo.switch_role, name="demo-switch"),
     path("", views.home, name="home"),
     path("health/", views.health, name="health"),
     path("workspace/<slug:workspace_slug>/", views.dashboard, name="dashboard"),

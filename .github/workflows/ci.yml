@@ -42,6 +42,19 @@ jobs:
           SECRET_KEY: "ci-only-security-check-key-with-at-least-fifty-characters-do-not-deploy"
           ALLOWED_HOSTS: example.com
         run: python manage.py check --deploy --fail-level WARNING
+      - name: Verify visitor demo in Chromium
+        run: |
+          pip install -e '.[browser]'
+          python -m playwright install --with-deps chromium
+          python manage.py migrate --noinput
+          DEMO_ENABLED=true python manage.py runserver 127.0.0.1:8000 --noreload > /tmp/pressroom-demo.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid"' EXIT
+          for attempt in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:8000/health/ > /dev/null; then break; fi
+            sleep 1
+          done
+          python scripts/demo_smoke.py --base-url http://127.0.0.1:8000
   container:
     runs-on: ubuntu-latest
     steps:

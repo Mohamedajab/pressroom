@@ -1,5 +1,6 @@
 """Environment-driven settings; SQLite locally, PostgreSQL in Compose and CI."""
 
+import hashlib
 import os
 from pathlib import Path
 
@@ -8,13 +9,23 @@ from django.core.exceptions import ImproperlyConfigured
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 DEBUG = os.environ.get("DEBUG", "true").lower() == "true"
+DEMO_ENABLED = os.environ.get("DEMO_ENABLED", "false").lower() == "true"
 SECRET_KEY = os.environ.get("SECRET_KEY", "local-development-key-do-not-deploy")
+if os.environ.get("SECRET_KEY_SEED"):
+    seed = os.environ["SECRET_KEY_SEED"]
+    if len(seed) < 43:
+        raise ImproperlyConfigured("SECRET_KEY_SEED requires a platform-generated 256-bit value.")
+    SECRET_KEY = hashlib.sha512(seed.encode()).hexdigest()
 if not DEBUG and (SECRET_KEY == "local-development-key-do-not-deploy" or len(SECRET_KEY) < 50):
     raise ImproperlyConfigured("Production requires a unique SECRET_KEY of at least 50 characters.")
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1,testserver").split(",")
+if os.environ.get("RENDER_EXTERNAL_HOSTNAME"):
+    ALLOWED_HOSTS.append(os.environ["RENDER_EXTERNAL_HOSTNAME"])
 CSRF_TRUSTED_ORIGINS = [
     origin for origin in os.environ.get("CSRF_TRUSTED_ORIGINS", "").split(",") if origin
 ]
+if os.environ.get("RENDER_EXTERNAL_HOSTNAME"):
+    CSRF_TRUSTED_ORIGINS.append("https://" + os.environ["RENDER_EXTERNAL_HOSTNAME"])
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -34,6 +45,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "publishing.demo.DemoMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
@@ -48,6 +60,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "publishing.demo.demo_context",
             ]
         },
     }
