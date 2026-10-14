@@ -11,15 +11,17 @@ Pressroom is an original team CMS inspired by the editorial problems that system
 
 ## Try the visitor demo
 
+**[Open the live Pressroom demo](https://pressroom-demo.onrender.com/demo/)** — no signup required. The hosted publishing flow and visitor isolation were checked on 14 October 2026. A free instance may take a moment to wake up.
+
 The opt-in `/demo/` experience creates a separate one-hour workspace for each visitor, with author/editor switching and a real draft → review → publication workflow. It uses the same Django services and database as the application. No shared account password is published.
 
-For local preview, set `DEMO_ENABLED=true`, apply migrations and open `/demo/`. See [hosted demo setup](docs/hosted-demo.md) for the Render blueprint, free-tier limits and a two-minute walkthrough. The deployment files are prepared; a public deployment is not yet verified.
+For local preview, set `DEMO_ENABLED=true`, apply migrations and open `/demo/`. See [hosted demo setup](docs/hosted-demo.md) for the Render blueprint, free-tier limits and a two-minute walkthrough.
 
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https%3A%2F%2Fgithub.com%2FMohamedajab%2Fpressroom)
 
 ![Start a visitor demo](docs/screenshots/demo-start.png)
 
-**Verified:** 70 tests passing against PostgreSQL on Python 3.12/3.13, 97.63% backend coverage, and a successful Docker build. [Verification record](docs/verification.md).
+**Verified:** 76 tests passed against PostgreSQL locally, with passing Python 3.12/3.13 CI, Chromium demo verification and a successful Docker build. [Verification record](docs/verification.md).
 
 ![The editorial dashboard](docs/screenshots/dashboard.png)
 
