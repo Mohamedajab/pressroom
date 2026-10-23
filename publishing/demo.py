@@ -12,8 +12,9 @@ from django.shortcuts import redirect, render
 from django.utils import timezone
 from django.views.decorators.http import require_GET, require_POST
 
+from .demo_content import STORIES
 from .models import DemoSession, Membership, Page, Workspace
-from .services import create_page, transition
+from .services import create_page, transition, update_page
 
 
 def current_demo(request):
@@ -82,13 +83,16 @@ def start(request):
         return HttpResponse("The demo is busy. Please try again later.", status=503)
     with transaction.atomic():
         workspace = Workspace.objects.create(
-            name="Your Fieldnotes Studio", slug="demo-" + __import__("uuid").uuid4().hex
+            name="Fieldnotes Studio",
+            slug="demo-" + __import__("uuid").uuid4().hex,
+            description="Sample stories and team notes from a small local magazine.",
         )
         suffix = workspace.slug.removeprefix("demo-")
         users = {}
         for role in ("author", "editor"):
             user = get_user_model().objects.create_user(
-                username=f"demo-{role}-{suffix}", first_name=role.title()
+                username=f"demo-{role}-{suffix}",
+                first_name="Alex" if role == "author" else "Sam",
             )
             users[role] = user
             Membership.objects.create(workspace=workspace, user=user, role=role)
@@ -98,27 +102,45 @@ def start(request):
             editor=users["editor"],
             expires_at=timezone.now() + timedelta(hours=1),
         )
-        page = create_page(
-            users["author"],
-            workspace,
-            title="A place for unfinished ideas",
-            slug="unfinished-ideas",
-            excerpt="Try editing a published story without changing the live version.",
-            body="## Your next chapter\n\nGood stories begin with a small first step. Edit this story, submit it for review, then switch to editor to publish your changes.",
-        )
-        page = transition(
-            users["author"], workspace, page.pk, expected_version=page.version, action="submit"
-        )
-        transition(
-            users["editor"], workspace, page.pk, expected_version=page.version, action="publish"
-        )
-        create_page(
-            users["author"],
-            workspace,
-            title="Notes from the studio",
-            slug="studio-notes",
-            body="## Still in draft\n\nThis document stays private until an editor approves it.",
-        )
+        for title, slug, excerpt, body, state in STORIES:
+            page = create_page(
+                users["author"], workspace, title=title, slug=slug, excerpt=excerpt, body=body
+            )
+            if state != "draft":
+                page = transition(
+                    users["author"],
+                    workspace,
+                    page.pk,
+                    expected_version=page.version,
+                    action="submit",
+                )
+            if state in ("published", "archived"):
+                page = transition(
+                    users["editor"],
+                    workspace,
+                    page.pk,
+                    expected_version=page.version,
+                    action="publish",
+                )
+            if state == "archived":
+                transition(
+                    users["editor"],
+                    workspace,
+                    page.pk,
+                    expected_version=page.version,
+                    action="archive",
+                )
+            if slug == "unfinished-ideas":
+                update_page(
+                    users["author"],
+                    workspace,
+                    page.pk,
+                    expected_version=page.version,
+                    title=title,
+                    excerpt=excerpt,
+                    body=body
+                    + "\n\n## Not ready to publish yet\n\nWe might move the meeting to Thursday. Check with Sam before changing the time on the public page.",
+                )
     login(request, users["author"], backend="django.contrib.auth.backends.ModelBackend")
     request.session.set_expiry(3600)
     return redirect("dashboard", workspace_slug=workspace.slug)

@@ -58,9 +58,9 @@
                  rel="noopener">Visit your publication ↗</a>
             </div>
             <div class="profile">
-              <span class="avatar">{{ user.username|first|upper }}</span>
+              <span class="avatar">{{ user.get_full_name|default:user.username|first|upper }}</span>
               <div>
-                <strong>{{ user.username }}</strong>
+                <strong>{{ user.get_full_name|default:user.username }}</strong>
                 <small>{{ role|title }}</small>
               </div>
               <form method="post" action="{% url 'logout' %}">

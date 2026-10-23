@@ -75,3 +75,24 @@ def test_demo_publishes_approved_snapshot_and_keeps_drafts_private(client):
     base = f"/sites/{demo.workspace.slug}/"
     assert client.get(base + "unfinished-ideas/").status_code == 200
     assert client.get(base + "studio-notes/").status_code == 404
+
+
+def test_demo_has_sample_stories_and_real_workflow_history(client):
+    response = client.post("/demo/start/")
+    demo = DemoSession.objects.get()
+    assert demo.workspace.pages.count() == 8
+    assert demo.workspace.pages.filter(status="review").count() == 2
+    assert demo.workspace.pages.filter(status="archived").count() == 1
+    assert b"Alex" in client.get(response.url).content
+    assert b"demo-author-" not in client.get(response.url).content
+    page = demo.workspace.pages.get(slug="unfinished-ideas")
+    assert page.revisions.count() == 4
+    assert page.published_revision is not None
+    public = client.get(f"/sites/{demo.workspace.slug}/unfinished-ideas/")
+    assert b"Not ready to publish yet" not in public.content
+    assert b"Not ready to publish yet" in page.body.encode()
+    for slug in ("repair-table", "reading-room-hours", "bookshop-interview", "moving-the-shelves"):
+        assert client.get(f"/sites/{demo.workspace.slug}/{slug}/").status_code == 404
+    assert {"created", "submit", "publish", "updated", "archive"} <= set(
+        demo.workspace.events.values_list("action", flat=True)
+    )

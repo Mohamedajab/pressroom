@@ -100,7 +100,7 @@
               </td>
               <td>
                 <span class="author-cell">
-                  <span class="avatar small">{{ page.author.username|first|upper }}</span>{{ page.author.username }}</span>
+                  <span class="avatar small">{{ page.author.get_full_name|default:page.author.username|first|upper }}</span>{{ page.author.get_full_name|default:page.author.username }}</span>
               </td>
               <td class="date-cell">
                 {{ page.updated_at|date:'d M Y' }}<small>{{ page.updated_at|date:'H:i' }}</small>

@@ -29,7 +29,7 @@ Demo workspaces expire after one hour. Mutations have a 20 KB request limit and 
 
 ## Two-minute walkthrough
 
-1. Start your demo. Open **A place for unfinished ideas** and its published version.
+1. Start your demo. Open **What we're working on this week** and its published version.
 2. Edit the draft. Refresh the publication to show that unapproved text stays private.
 3. Send for review, switch to editor and approve the new version.
 4. Show the changed publication, revision history and activity log.

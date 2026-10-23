@@ -7,7 +7,7 @@
     <div>
       <div class="eyebrow">PAGE OVERVIEW · VERSION {{ page.version }}</div>
       <h1 class="detail-title">{{ page.title }}</h1>
-      <p class="muted">/{{ page.slug }} · By {{ page.author.username }} · Updated {{ page.updated_at|date:'d M Y, H:i' }}</p>
+      <p class="muted">/{{ page.slug }} · By {{ page.author.get_full_name|default:page.author.username }} · Updated {{ page.updated_at|date:'d M Y, H:i' }}</p>
     </div>
     {% if can_edit %}
       <a class="button primary"
@@ -34,7 +34,7 @@
             <span class="version-mark">v{{ revision.number }}</span>
             <div>
               <strong>{{ revision.title }}</strong>
-              <small>{{ revision.actor.username }} · {{ revision.created_at|date:'d M, H:i' }}</small>
+              <small>{{ revision.actor.get_full_name|default:revision.actor.username }} · {{ revision.created_at|date:'d M, H:i' }}</small>
             </div>
             {% if can_edit and revision.number != page.version %}
               <form method="post" action="{% url 'page-action' workspace.slug page.pk %}">

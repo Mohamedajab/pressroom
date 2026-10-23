@@ -15,9 +15,9 @@
       <h2>Your team</h2>
       {% for member in members %}
         <div class="member-row">
-          <span class="avatar">{{ member.user.username|first|upper }}</span>
+          <span class="avatar">{{ member.user.get_full_name|default:member.user.username|first|upper }}</span>
           <div>
-            <strong>{{ member.user.username }}</strong>
+            <strong>{{ member.user.get_full_name|default:member.user.username }}</strong>
             <small>{{ member.user.email }}</small>
           </div>
           <span class="badge draft">{{ member.get_role_display }}</span>

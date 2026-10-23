@@ -16,7 +16,7 @@
         <div class="timeline-item">
           <span class="timeline-dot"></span>
           <div>
-            <strong>{{ event.actor.username|default:'Scheduler' }}</strong> <span class="event-action">{{ event.action }}</span>
+            <strong>{% if event.actor %}{{ event.actor.get_full_name|default:event.actor.username }}{% else %}Scheduler{% endif %}</strong> <span class="event-action">{{ event.action }}</span>
             {% if event.page %}
               <a href="{% url 'page-detail' workspace.slug event.page.pk %}">{{ event.page.title }}</a>
             {% endif %}
