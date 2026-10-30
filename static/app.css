@@ -1321,3 +1321,8 @@ input,select{
     margin:0
   }
 }
+
+#form-errors:focus {
+  outline: 3px solid currentColor;
+  outline-offset: 3px;
+}

@@ -49,7 +49,7 @@ def _locked_page(user, workspace, page_id, expected_version, *, editor=False):
     if not editor and not can_edit(user, page, role):
         raise PermissionDenied("You cannot edit this page.")
     if page.version != expected_version:
-        raise VersionConflict("This page changed. Reload it before trying again.")
+        raise VersionConflict("This page changed. Copy your unsaved text before reloading it.")
     return page
 
 

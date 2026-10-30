@@ -4,6 +4,8 @@ A Django CMS for small editorial teams. Write a draft, send it for review, and p
 
 **[Try the live demo](https://pressroom-demo-mohamedajab.vercel.app/demo/)** · [CI](https://github.com/Mohamedajab/pressroom/actions/workflows/ci.yml) · [API guide](docs/api.md)
 
+[Workflow recording](docs/recordings/publishing-workflow.webm) · [Verification and CV notes](docs/verification.md)
+
 Each visitor gets a separate workspace with sample stories, revision history and author/editor switching. No signup is needed. The workspace expires after an hour.
 
 ![Content library with sample stories and their publishing status](docs/screenshots/dashboard.jpg)

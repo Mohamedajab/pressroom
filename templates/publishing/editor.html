@@ -17,9 +17,19 @@
   <span class="badge {{ page.status }}">{{ page.get_status_display }}</span>
 {% endif %}
 </div>
+{% if form.errors %}
+<section class="notice error" id="form-errors" role="alert" tabindex="-1" autofocus aria-labelledby="errors-heading">
+  <h2 id="errors-heading">Your draft was not saved</h2>
+  <p>Your text is still in the form. Check the errors before trying again.</p>
+  {{ form.non_field_errors }}
+  <ul>{% for field in form %}{% for error in field.errors %}
+    <li>{% if not field.is_hidden %}<a href="#{{ field.id_for_label }}">{{ field.label }}: {{ error }}</a>{% else %}{{ error }}{% endif %}</li>
+  {% endfor %}{% endfor %}</ul>
+</section>
+{% endif %}
 <form method="post" class="editor-grid">
   {% csrf_token %}
-  <section class="panel editor-fields">{{ form.non_field_errors }}{% for field in form %}{% if field.is_hidden %}{{ field }}{{ field.errors }}{% elif field.name != "slug" %}
+  <section class="panel editor-fields">{% for field in form %}{% if field.is_hidden %}{{ field }}{{ field.errors }}{% elif field.name != "slug" %}
     <div class="form-field">{{ field.label_tag }}{{ field }}{% if field.help_text %}
       <small class="help">{{ field.help_text }}</small>
     {% endif %}{{ field.errors }}</div>
