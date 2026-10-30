@@ -1,5 +1,7 @@
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import redirect_to_login
 from django.core.exceptions import PermissionDenied, ValidationError
 from django.core.paginator import Paginator
 from django.db import connection
@@ -20,8 +22,11 @@ def _workspace(request, slug):
     return workspace, role
 
 
-@login_required
 def home(request):
+    if not request.user.is_authenticated:
+        if settings.DEMO_ENABLED:
+            return redirect("demo")
+        return redirect_to_login(request.get_full_path())
     workspaces = Workspace.objects.filter(memberships__user=request.user)
     first = workspaces.first()
     if first:

@@ -16,6 +16,15 @@ def enable_demo(settings):
     settings.DEMO_ENABLED = True
 
 
+def test_public_home_opens_demo_without_an_account(client, settings):
+    response = client.get("/", follow=True)
+    assert response.status_code == 200
+    assert response.redirect_chain == [("/demo/", 302)]
+    assert b"Start my demo" in response.content
+    settings.DEMO_ENABLED = False
+    assert client.get("/").url == "/accounts/login/?next=/"
+
+
 def test_demo_is_opt_in_and_post_only(client, settings):
     settings.DEMO_ENABLED = False
     assert client.get("/demo/").status_code == 404

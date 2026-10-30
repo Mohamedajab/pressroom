@@ -6,7 +6,7 @@ A Django CMS for small editorial teams. Write a draft, send it for review, and p
 
 Each visitor gets a separate workspace with sample stories, revision history and author/editor switching. No signup is needed. The workspace expires after an hour.
 
-![Content library](docs/screenshots/dashboard.jpg)
+[![Content library](docs/screenshots/dashboard.jpg)](https://pressroom-demo-mohamedajab.vercel.app/demo/)
 
 ## Features
 

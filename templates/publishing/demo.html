@@ -1,12 +1,27 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}Pressroom · Try the demo{% endblock %}
+{% block social_meta %}
+<meta property="og:title" content="Pressroom — Write. Review. Publish.">
+<meta property="og:description" content="Try the editorial workspace. Sample stories, a real review process and a public publication. No signup needed.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="{{ request.scheme }}://{{ request.get_host }}{% url 'demo' %}">
+<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'workspace-preview.jpg' %}">
+<meta name="twitter:card" content="summary_large_image">
+{% endblock %}
 {% block layout %}
 <main id="main" class="demo-landing">
   <header class="demo-header"><a class="brand" href="{% url 'demo' %}">Pressroom<span class="brand-dot">.</span></a><a href="https://github.com/Mohamedajab/pressroom">Source on GitHub ↗</a></header>
+  <div class="demo-hero">
   <div class="demo-intro"><p class="eyebrow">A TEAM PUBLISHING TOOL</p><h1>Write. Review.<br>Publish.</h1>
   <p class="demo-lead">A small workspace for getting a story from its first draft to the published page.</p>
   <form method="post" action="{% url 'demo-start' %}">{% csrf_token %}<button class="button primary">Start my demo →</button></form>
   <p class="muted tiny">No account needed. Your workspace lasts one hour.</p></div>
+  <figure class="demo-preview">
+    <img src="{% static 'workspace-preview.jpg' %}" width="1264" height="1345" alt="Pressroom content library showing sample stories, their authors and review status.">
+    <figcaption>Content library · Fieldnotes Studio</figcaption>
+  </figure>
+  </div>
   <section class="demo-steps" aria-label="How the demo works">
     <div><span>01 / WRITE</span><h2>Start with a draft</h2><p>Open a sample story or write your own. Changes stay private until approved.</p></div>
     <div><span>02 / REVIEW</span><h2>Get a second look</h2><p>Send a draft for review. Switch to the editor role to check it.</p></div>
