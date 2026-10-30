@@ -6,7 +6,7 @@ A Django CMS for small editorial teams. Write a draft, send it for review, and p
 
 Each visitor gets a separate workspace with sample stories, revision history and author/editor switching. No signup is needed. The workspace expires after an hour.
 
-[![Content library](docs/screenshots/dashboard.jpg)](https://pressroom-demo-mohamedajab.vercel.app/demo/)
+![Content library with sample stories and their publishing status](docs/screenshots/dashboard.jpg)
 
 ## Features
 
@@ -16,6 +16,37 @@ Each visitor gets a separate workspace with sample stories, revision history and
 - Revision restore, edit conflict detection and an activity log.
 - REST API with session/token authentication and OpenAPI docs.
 - Markdown rendering with HTML sanitization.
+
+## Screenshots
+
+### Review and revisions
+
+Review a draft, check earlier versions, and approve it for publication.
+
+![Story review with publication controls and revision history](docs/screenshots/review.jpg)
+
+### Public publication
+
+Readers see the approved version while the next draft stays private.
+
+![Published stories in the Fieldnotes Studio publication](docs/screenshots/publication.jpg)
+
+<details>
+<summary>Demo landing page, sign-in and mobile</summary>
+
+### Demo landing page
+
+![Public demo landing page with workspace preview](docs/screenshots/demo-start.jpg)
+
+### Sign in
+
+![Pressroom account sign-in page](docs/screenshots/login.jpg)
+
+### Mobile workspace
+
+<img src="docs/screenshots/demo-mobile.jpg" alt="Pressroom content library on a mobile screen" width="390">
+
+</details>
 
 ## Run locally
 
@@ -36,14 +67,6 @@ On Windows PowerShell, use `.\.venv\Scripts\Activate.ps1` to activate the enviro
 Open [localhost:8000/demo/](http://localhost:8000/demo/). API docs are at `/api/docs/` and database health is at `/health/`.
 
 For a persistent local workspace, run `python manage.py bootstrap_workspace my-studio --name "My Studio" --username owner`. It prompts for a password when creating an account. The local-only `seed_demo` command is also available; see [deployment notes](docs/deployment.md).
-
-## Screens
-
-| Review and revisions | Public publication |
-| --- | --- |
-| ![Review](docs/screenshots/review.jpg) | ![Publication](docs/screenshots/publication.jpg) |
-
-[Demo start](docs/screenshots/demo-start.jpg) · [Sign in](docs/screenshots/login.jpg) · [Mobile](docs/screenshots/demo-mobile.jpg)
 
 ## Checks
 
