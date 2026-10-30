@@ -1,16 +1,12 @@
 {% extends "public_base.html" %}
 {% block public_content %}
   <section class="publication-hero">
-    <div class="eyebrow">NOTES, IDEAS &amp; NEW PERSPECTIVES</div>
-    <h1>
-      A space for
-      <br>
-      <em>something good.</em>
-    </h1>
-    <p>{{ workspace.description|default:'Stories worth taking a moment for.' }}</p>
+    <div class="eyebrow">THE JOURNAL</div>
+    <h1>{{ workspace.name }}</h1>
+    <p>{{ workspace.description|default:'News and notes from the team.' }}</p>
   </section>
   <div class="publication-section">
-    <h2>The latest chapters</h2>
+    <h2>Latest stories</h2>
     <form method="get" class="public-search">
       <label class="sr-only" for="public-search">Search published pages</label>
       <input name="q"
@@ -34,7 +30,7 @@
       </a>
     {% empty %}
       <div class="empty-state">
-        <h2>Something good is on its way.</h2>
+        <h2>No stories published yet.</h2>
         <p>
           {% if term %}No published stories match your search.{% else %}Check back for our first story.{% endif %}
         </p>

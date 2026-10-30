@@ -1,6 +1,6 @@
 # Hosted portfolio demo
 
-**Live:** [pressroom-demo.onrender.com/demo/](https://pressroom-demo.onrender.com/demo/). On 14 October 2026, the hosted health endpoint and a real Chromium publishing flow passed verification, including private drafts, visitor isolation and mobile layout. See [the verification record](verification.md).
+**Live:** [pressroom-demo-mohamedajab.vercel.app/demo/](https://pressroom-demo-mohamedajab.vercel.app/demo/). The current deployment uses Vercel and Neon PostgreSQL. Manual publishing is available; scheduled publishing is not configured. See the [README](../README.md#deployment) for its environment settings.
 
 ## Deploy from your own Render account
 
@@ -34,8 +34,8 @@ Demo workspaces expire after one hour. Mutations have a 20 KB request limit and 
 3. Send for review, switch to editor and approve the new version.
 4. Show the changed publication, revision history and activity log.
 
-![Visitor workspace](screenshots/demo-workspace.png)
-![Mobile demo](screenshots/demo-mobile.png)
+![Visitor workspace](screenshots/dashboard.jpg)
+![Mobile demo](screenshots/demo-mobile.jpg)
 
 ## Local browser verification
 

@@ -4,9 +4,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}Pressroom · Your words, ready for the world{% endblock %}</title>
+    <title>{% block title %}Pressroom · Editorial workspace{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'app.css' %}">
-    <link rel="stylesheet" href="{% static 'demo.css' %}">
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
@@ -14,8 +13,7 @@
       <div class="app-shell">
         <aside class="sidebar">
           <a class="brand" href="{% url 'home' %}">
-            <span class="brand-mark">p<span>•</span>
-            </span>pressroom<span class="brand-dot">.</span>
+Pressroom<span class="brand-dot">.</span>
           </a>
           <form class="mobile-signout" method="post" action="{% url 'logout' %}">
             {% csrf_token %}
@@ -41,18 +39,16 @@
           <nav aria-label="Workspace navigation">
             <a class="nav-link {% if section == 'content' %}active{% endif %}"
                href="{% url 'dashboard' workspace.slug %}">
-              <span aria-hidden="true">▤</span> Content library</a>
+              Content library</a>
             <a class="nav-link {% if section == 'activity' %}active{% endif %}"
                href="{% url 'activity' workspace.slug %}">
-              <span aria-hidden="true">◷</span> Activity log</a>
+              Activity log</a>
             <a class="nav-link {% if section == 'team' %}active{% endif %}"
                href="{% url 'team' workspace.slug %}">
-              <span aria-hidden="true">♧</span> Your team</a>
+              Team</a>
           </nav>
           <div class="sidebar-bottom">
             <div class="site-card">
-              <span class="live-dot"></span> MAKE SOMETHING MATTER
-              <p>A little space for your next big idea.</p>
               <a href="{% url 'public-index' workspace.slug %}"
                  target="_blank"
                  rel="noopener">Visit your publication ↗</a>
@@ -79,8 +75,8 @@
           <main id="main" class="main-content">
             {% if demo_session %}
               <aside class="notice demo-controls" aria-label="Demo controls">
-                <div><strong>Your private demo · {{ role|title }} access</strong>
-                <p>This workspace expires in one hour. Use sample content only. Switch roles to review and publish your draft.</p></div>
+                <div><strong>Demo workspace · {{ role|title }} access</strong>
+                <p>Sample content · Resets after one hour. Switch roles to try the review process.</p></div>
                 <form method="post" action="{% url 'demo-switch' %}">{% csrf_token %}
                   <input type="hidden" name="role" value="{% if role == 'author' %}editor{% else %}author{% endif %}">
                   <button class="button">Switch to {% if role == 'author' %}editor{% else %}author{% endif %}</button>
@@ -93,8 +89,7 @@
             {% block content %}{% endblock %}
           </main>
           <footer class="app-footer">
-            <span>Made for thoughtful publishing.</span>
-            <span>Pressroom <span class="footer-dot">●</span> A place to publish</span>
+<span>Pressroom</span><span>{{ workspace.name }}</span>
           </footer>
         </div>
       </div>

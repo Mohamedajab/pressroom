@@ -27,7 +27,7 @@
         <article class="prose">{{ rendered_body|safe }}</article>
       </section>
       <section class="panel revision-panel">
-        <h2>Every chapter, kept.</h2>
+        <h2>Revision history</h2>
         <p class="muted tiny">Restore a previous version as a new draft. Your history stays intact.</p>
         {% for revision in revisions %}
           <div class="revision-row">
@@ -54,7 +54,7 @@
     </div>
     <aside>
       <section class="panel workflow-panel">
-        <h3>Where things stand</h3>
+        <h3>Publication status</h3>
         <span class="badge {{ page.status }}">{{ page.get_status_display }}</span>
         {% if page.published_revision_id %}
           <p class="muted tiny">An approved version is live.</p>

@@ -1,61 +1,10 @@
 {% extends "base.html" %}
-{% block title %}Welcome back · Pressroom{% endblock %}
+{% block title %}Sign in · Pressroom{% endblock %}
 {% block layout %}
-  <main id="main" class="login-layout">
-    <section class="login-story">
-      <a class="brand" href="{% url 'home' %}">
-        <span class="brand-mark">p<span>•</span>
-        </span>pressroom.</a>
-        <div>
-          <div class="eyebrow light">GOOD STORIES DESERVE A HOME</div>
-          <h1>
-            From first thought
-            <br>
-            to <em>published.</em>
-          </h1>
-          <p>
-            A considered space for teams to write, review
-            <br>
-            and put their best work into the world.
-          </p>
-          <div class="story-art" aria-hidden="true">
-            <div class="art-sheet">
-              <span>THE NEXT CHAPTER</span>
-              <b>Ideas become
-                <br>
-              something.</b>
-              <i>
-              </i>
-              <i>
-              </i>
-              <i>
-              </i>
-              <div>● READY WHEN YOU ARE</div>
-            </div>
-            <div class="art-tag">Write. Refine. Publish. ↗</div>
-          </div>
-        </div>
-        <small>Built for the way good teams work.</small>
-      </section>
-      <section class="login-panel">
-        <div class="login-form">
-          <div class="eyebrow">YOUR EDITORIAL SPACE</div>
-          <h2>Welcome back.</h2>
-          <p class="muted">Your next chapter starts here.</p>
-          <form method="post">
-            {% csrf_token %}{{ form.non_field_errors }}{% for field in form %}
-            <div class="form-field">{{ field.label_tag }}{{ field }}{{ field.errors }}</div>
-{% endfor %}
-{% if next %}
-  <input type="hidden" name="next" value="{{ next }}">
-{% endif %}
-<button class="button primary full">
-  Sign in to Pressroom <span>→</span>
-</button>
-</form>
-<p class="login-footnote">Need access? Ask your workspace owner for an account.</p>
-{% if demo_enabled %}<p><a class="button" href="{% url 'demo' %}">Try the interactive demo →</a></p>{% endif %}
-</div>
-</section>
+<main id="main" class="login-layout">
+  <section class="login-story"><a class="brand" href="{% url 'home' %}">Pressroom<span class="brand-dot">.</span></a><div><p class="eyebrow">THE EDITORIAL DESK</p><h1>Good work<br>takes an edit.</h1><p>Drafts, reviews and published pages.<br>All in one place.</p></div><small>A workspace for your publication.</small></section>
+  <section class="login-panel"><div class="login-form"><h2>Sign in</h2><p class="muted">Use your workspace account.</p>
+  <form method="post">{% csrf_token %}{{ form.non_field_errors }}{% for field in form %}<div class="form-field">{{ field.label_tag }}{{ field }}{{ field.errors }}</div>{% endfor %}{% if next %}<input type="hidden" name="next" value="{{ next }}">{% endif %}<button class="button primary full">Sign in →</button></form>
+  <p class="login-footnote">Need access? Ask your workspace owner.</p>{% if demo_enabled %}<a class="subtle-link" href="{% url 'demo' %}">Try the demo instead →</a>{% endif %}</div></section>
 </main>
 {% endblock %}

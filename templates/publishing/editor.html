@@ -5,13 +5,13 @@
   <a class="back-link" href="{% url 'dashboard' workspace.slug %}">← Content library</a>
   <div class="page-heading">
     <div>
-      <div class="eyebrow">MAKE ROOM FOR AN IDEA</div>
+      <div class="eyebrow">EDITOR</div>
       <h1>
-      {% if page %}A little refinement<span class="accent">.</span>
-{% else %}Start something good<span class="accent">.</span>
+      {% if page %}Edit page
+{% else %}New page
 {% endif %}
 </h1>
-<p class="muted">Write freely. Save a draft. Publish when you’re ready.</p>
+<p class="muted">Save your changes, then send the draft for review.</p>
 </div>
 {% if page %}
   <span class="badge {{ page.status }}">{{ page.get_status_display }}</span>
@@ -34,15 +34,7 @@
     <p class="muted tiny">Saving creates a new revision. Existing live content stays published until an editor approves your changes.</p>
     <button class="button primary full">Save draft →</button>
   </section>
-  <section class="writing-tip">
-    <div class="eyebrow">A SMALL WRITING TIP</div>
-    <h3>
-      Give your words
-      <br>
-      some breathing room.
-    </h3>
-    <p>Short paragraphs. Clear headings. One good idea at a time.</p>
-  </section>
+
 </aside>
 </form>
 {% endblock %}

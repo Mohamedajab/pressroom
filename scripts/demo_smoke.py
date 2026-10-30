@@ -20,10 +20,10 @@ def main():
         errors = []
         page.on("pageerror", lambda error: errors.append(str(error)))
         page.goto(args.base_url + "/demo/")
-        page.screenshot(path=str(output / "demo-start.png"), full_page=True)
+        page.screenshot(path=str(output / "demo-start.jpg"), full_page=True)
         page.get_by_role("button", name="Start my demo").click()
         dashboard = page.url
-        page.screenshot(path=str(output / "demo-workspace.png"), full_page=True)
+        page.screenshot(path=str(output / "dashboard.jpg"), full_page=True)
         page.get_by_role("link", name="New page").click()
         slug = "demo-smoke-" + uuid4().hex[:8]
         page.get_by_label("Title").fill("A browser-tested story")
@@ -40,7 +40,7 @@ def main():
         page.get_by_role("button", name="Switch to editor").click()
         page.goto(detail)
         page.get_by_role("button", name="Approve & publish").click()
-        page.screenshot(path=str(output / "demo-review.png"), full_page=True)
+        page.screenshot(path=str(output / "review.jpg"), full_page=True)
         response = context.request.get(public)
         assert response.status == 200
         assert "Only approved content becomes public." in response.text()
@@ -57,7 +57,7 @@ def main():
         other.close()
         page.goto(dashboard)
         page.set_viewport_size({"width": 390, "height": 844})
-        page.screenshot(path=str(output / "demo-mobile.png"), full_page=True)
+        page.screenshot(path=str(output / "demo-mobile.jpg"), full_page=True)
         assert page.evaluate("document.documentElement.scrollWidth <= innerWidth")
         assert not errors, errors
         expect(page.get_by_role("button", name="Switch to author")).to_be_visible()

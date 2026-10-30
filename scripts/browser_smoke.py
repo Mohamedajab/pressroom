@@ -24,7 +24,7 @@ def main():
         errors = []
         page.on("pageerror", lambda error: errors.append(str(error)))
         page.goto(f"{args.base_url}/accounts/login/")
-        page.screenshot(path=str(screenshots / "login.png"), full_page=True)
+        page.screenshot(path=str(screenshots / "login.jpg"), full_page=True)
 
         def login(username):
             page.goto(f"{args.base_url}/accounts/login/")
@@ -34,7 +34,7 @@ def main():
             expect(page.get_by_role("heading", name="Good ideas live here.")).to_be_visible()
 
         login("author")
-        page.screenshot(path=str(screenshots / "dashboard.png"), full_page=True)
+        page.screenshot(path=str(screenshots / "dashboard.jpg"), full_page=True)
         page.get_by_role("link", name="New page").click()
         expect(page.get_by_role("heading", name="Start something good.")).to_be_visible()
         slug = f"browser-smoke-{uuid4().hex[:8]}"
@@ -53,7 +53,7 @@ def main():
         page.get_by_role("button", name="Sign out").click()
         login("editor")
         page.goto(detail_url)
-        page.screenshot(path=str(screenshots / "review.png"), full_page=True)
+        page.screenshot(path=str(screenshots / "review.jpg"), full_page=True)
         page.get_by_role("button", name="Approve & publish").click()
         expect(page.locator(".workflow-panel .badge")).to_have_text("Published")
         page.goto(f"{args.base_url}/sites/fieldnotes/{slug}/")
@@ -62,11 +62,11 @@ def main():
         ).to_be_visible()
         expect(page.locator(".prose strong")).to_have_text("draft")
         page.goto(f"{args.base_url}/sites/fieldnotes/")
-        page.screenshot(path=str(screenshots / "publication.png"), full_page=True)
+        page.screenshot(path=str(screenshots / "publication.jpg"), full_page=True)
         page.set_viewport_size({"width": 390, "height": 844})
         page.goto(f"{args.base_url}/workspace/fieldnotes/")
         expect(page.get_by_role("link", name="New page")).to_be_visible()
-        page.screenshot(path=str(screenshots / "mobile.png"), full_page=True)
+        page.screenshot(path=str(screenshots / "demo-mobile.jpg"), full_page=True)
         assert page.evaluate("document.documentElement.scrollWidth <= window.innerWidth"), (
             "Mobile document overflows"
         )

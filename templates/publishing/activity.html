@@ -3,9 +3,9 @@
 {% block content %}
   <div class="page-heading">
     <div>
-      <div class="eyebrow">A RECORD OF THE WORK</div>
+      <div class="eyebrow">WORKSPACE</div>
       <h1>
-        Nothing lost along the way<span class="accent">.</span>
+        Activity log
       </h1>
       <p class="muted">Who changed what, and when. Your team’s publishing history.</p>
     </div>
@@ -25,7 +25,7 @@
           </div>
         </div>
       {% empty %}
-        <div class="empty-state">Your story starts with the first change.</div>
+        <div class="empty-state">No changes recorded yet.</div>
       {% endfor %}
     </div>
     {% include "publishing/pagination.html" with items=events %}
