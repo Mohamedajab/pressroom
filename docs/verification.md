@@ -26,11 +26,6 @@ Windows, Python 3.12.10, Django 5.2.18, Playwright 1.64.1 Chromium; local SQLite
 - Django checks, migration drift, OpenAPI validation and production security checks: passed.
 - `ruff check .` and `ruff format --check .`: passed.
 
-The existing PR CI runs the tests and browser workflow against PostgreSQL 16 on Python 3.12
+CI runs the tests and browser workflow against PostgreSQL 16 on Python 3.12
 and 3.13. Its result must establish database concurrency evidence; SQLite does not verify row
 locks. No hosted deployment was changed.
-
-## Suggested CV bullets
-
-- Built a Django publishing application with role-based review, revision history and approved public snapshots.
-- Added keyboard-driven browser checks for publishing, private edits and conflicts, with focused error feedback that preserves unsaved text.

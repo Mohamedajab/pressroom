@@ -1,4 +1,4 @@
-# Hosted portfolio demo
+# Hosted demo
 
 **Live:** [pressroom-demo-mohamedajab.vercel.app/demo/](https://pressroom-demo-mohamedajab.vercel.app/demo/). The current deployment uses Vercel and Neon PostgreSQL. Manual publishing is available; scheduled publishing is not configured. See the [README](../README.md#deployment) for its environment settings.
 
@@ -9,7 +9,7 @@ The repository includes `render.yaml` for one Python web service and one Postgre
 1. Use [Deploy to Render](https://render.com/deploy?repo=https%3A%2F%2Fgithub.com%2FMohamedajab%2Fpressroom) and select the `main` branch.
 2. Confirm both resources use the free plan. Render generates a 256-bit secret seed and the private database connection. Django derives its signing key from the seed; keep it stable across deployments.
 3. Wait for a successful build and startup. Open the assigned HTTPS hostname with `/demo/` appended.
-4. Complete draft → review → publish, inspect `/health/`, and check the maintenance logs before adding the URL to a CV.
+4. Create a draft, send it for review and publish it. Inspect `/health/` and check the maintenance logs.
 
 The launcher runs migrations once before starting two Gunicorn workers. Maintenance runs `publish_due`, `cleanup_demos` and `clearsessions` every minute. It logs failures and continues; production operation still needs monitoring. Render's hostname supplies allowed hosts and trusted CSRF origins. Proxy trust is enabled for Render's HTTPS edge.
 
@@ -17,7 +17,7 @@ Auto-deployment is disabled so a repository push does not silently change a depl
 
 ## Free-tier limitations
 
-Render's [free web services](https://render.com/docs/free) sleep after inactivity and can take time to wake. Free PostgreSQL expires 30 days after creation. This blueprint is a temporary evaluation deployment, not permanent CV hosting. Before relying on it throughout a job search, choose a durable database plan or another host and review any charges yourself. No paid resource is created by this repository.
+Render's [free web services](https://render.com/docs/free) sleep after inactivity and can take time to wake. Free PostgreSQL expires 30 days after creation. This blueprint is for temporary deployments. For longer use, choose a persistent database or another host and review the current plans and charges. No paid resource is created by this repository.
 
 Scheduled publishing and cleanup pause while a free service sleeps. They resume at startup/wake. Expired authenticated demo sessions are rejected on every request even before cleanup runs. This single-service launcher is for a small demo, not a scaled scheduler architecture.
 

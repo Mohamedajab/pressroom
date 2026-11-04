@@ -18,4 +18,4 @@ python manage.py spectacular --validate --fail-on-warn --file openapi.yaml
 
 Run CI against PostgreSQL for lock/concurrency changes. Include migrations when changing models, and explain data migration or release implications. Update screenshots when the user interface changes substantially.
 
-AI assistance is allowed. Review generated code, understand what you submit and disclose substantial assistance in the PR description. Never include real credentials or private content in prompts, fixtures, screenshots or commits.
+Review and understand the code you submit. Describe how you made and tested the change, including substantial assistance where relevant. Never include real credentials or private content in fixtures, screenshots or commits.
