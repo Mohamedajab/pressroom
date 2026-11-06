@@ -1,34 +1,34 @@
-# Browser workflow evidence
+# Browser checks
 
-Run against the opt-in visitor demo, using an isolated local PostgreSQL database:
+Start the local demo, then run:
 
 ```bash
 python scripts/demo_smoke.py --browser chromium --record-video
 python scripts/demo_smoke.py --browser firefox
 ```
 
-Each browser gets a separate `docs/evidence/<browser>/` directory. Failures save
-screenshots of open pages and a trace before propagating the exception; success
-also retains a trace. CI uploads this directory even after failure. Chromium runs
-in the existing quality job and Firefox runs in a separate PostgreSQL-backed job.
+Results go into `docs/evidence/<browser>/`. If a check fails, the script saves
+screenshots of open pages and a trace, then exits with an error. A successful run
+also keeps its trace. CI uploads these files even when a check fails.
 
-| Workflow | Assertion in `scripts/demo_smoke.py` |
+| Check | Expected result |
 |---|---|
-| Publication visibility | Draft URL returns 404; approved URL returns 200 with approved text |
-| Private edits | Public response excludes saved private draft text |
-| Edit conflict | Stale POST returns 409, retains unsaved body, focuses error summary |
-| Keyboard controls | Real Tab navigation reaches controls and Enter activates them |
-| Mobile layout | 390×844 viewport has no document overflow and role control remains visible |
-| Session isolation | A separate demo context cannot open the first workspace (403) |
-| Validation | Duplicate slug retains submitted body and focuses errors |
+| Publishing | Draft page returns 404; approved page returns 200 with the approved text |
+| Private edits | Public page does not show saved draft changes |
+| Edit conflict | Stale save returns 409, keeps unsaved text and focuses the error message |
+| Keyboard | Tab reaches the controls; Enter activates them |
+| Mobile | At 390×844, the page fits the screen and the role button is visible |
+| Separate sessions | A second visitor cannot open the first visitor's workspace |
+| Duplicate slug | The form keeps the submitted text and focuses the error message |
 
-[Chromium assertion record](evidence/chromium/workflow-results.json),
-[recording](evidence/chromium/recordings/publishing-workflow.webm),
-[publication screenshot](evidence/chromium/publication.jpg),
-[mobile screenshot](evidence/chromium/demo-mobile.jpg).
+[Results](evidence/chromium/workflow-results.json) ·
+[Recording](evidence/chromium/recordings/publishing-workflow.webm) ·
+[Published page](evidence/chromium/publication.jpg) ·
+[Mobile view](evidence/chromium/demo-mobile.jpg)
 
-Measured locally on 6 November 2026: Python 3.12.10 and PostgreSQL 17.11,
-**78 tests passed, including both concurrency tests**, 96.45% publishing coverage.
-The Chromium visitor workflow passed. Firefox could not launch on this Windows
-host (`spawn UNKNOWN`); the separate Linux CI job is the authoritative Firefox
-verification. No application behaviour was changed by this PR.
+On 6 November 2026, all 79 local tests passed with Python 3.12.10 and PostgreSQL
+17.11, including both concurrency tests. Publishing coverage was 96.45%.
+Chromium passed locally. Firefox could not launch on this Windows machine, but
+both browser workflows passed in [Linux CI](https://github.com/Mohamedajab/pressroom/actions/runs/42226869847).
+CI runs Firefox in its own job. Shared traces have local paths and demo session
+credentials removed.
