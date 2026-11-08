@@ -1,0 +1,13 @@
+{
+  "browser": "chromium",
+  "status": "PASS",
+  "assertions": {
+    "publication": "Draft returns 404; approved page returns 200 with approved text",
+    "private edits": "Public response excludes private draft text",
+    "conflict": "Stale save returns 409; unsaved text retained and error focused",
+    "keyboard": "Controls reached through Tab and activated with Enter",
+    "mobile": "390px viewport has no horizontal page overflow",
+    "isolation": "Second demo session receives 403 for first workspace",
+    "javascript": "No pageerror events on primary workflow page"
+  }
+}

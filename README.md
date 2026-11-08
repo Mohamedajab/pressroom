@@ -81,6 +81,7 @@ ruff format --check .
 ```
 
 SQLite skips the two PostgreSQL concurrency tests. CI tests with PostgreSQL on Python 3.12 and 3.13. Browser checks are in `scripts/demo_smoke.py` and `scripts/browser_smoke.py`.
+See [browser checks and results](docs/browser-evidence.md) for Chromium and Firefox commands.
 
 ## Deployment
 

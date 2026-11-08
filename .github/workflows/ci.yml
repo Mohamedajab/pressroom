@@ -55,6 +55,50 @@ jobs:
             sleep 1
           done
           python scripts/demo_smoke.py --base-url http://127.0.0.1:8000
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: chromium-evidence-${{ matrix.python }}
+          path: docs/evidence/chromium/
+  firefox:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: pressroom
+          POSTGRES_USER: pressroom
+          POSTGRES_PASSWORD: ci-only
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U pressroom -d pressroom"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL: postgresql://pressroom:ci-only@localhost:5432/pressroom
+      DEMO_ENABLED: 'true'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements-dev.txt -e '.[browser]'
+      - run: python -m playwright install --with-deps firefox
+      - name: Verify same workflow in Firefox
+        run: |
+          python manage.py migrate --noinput
+          python manage.py runserver 127.0.0.1:8000 --noreload > /tmp/pressroom-firefox.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid"' EXIT
+          for attempt in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:8000/health/ > /dev/null; then break; fi
+            sleep 1
+          done
+          python scripts/demo_smoke.py --browser firefox
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: firefox-evidence
+          path: docs/evidence/firefox/
   container:
     runs-on: ubuntu-latest
     steps:
